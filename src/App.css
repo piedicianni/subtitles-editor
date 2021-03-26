@@ -57,7 +57,19 @@
   left: 4px !important;
 }
 
+.noUi-handle-lower .noUi-tooltip{
+  left: 0% !important;
+  transform: translate(-80%, 0) !important;
+}
+
 .noUi-handle-upper .noUi-tooltip{
+  left: 100% !important;
+  transform: translate(-30%, 0) !important;
   bottom: 0 !important;
-  transform: translate(-50%, 120%) !important;
+  transform: translate(-20%, 120%) !important;
+}
+
+.form-group input, .form-group input:focus, .form-group textarea, .form-group textarea:focus{
+  background-color: #212529;
+  color: white;
 }
