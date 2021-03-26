@@ -13,6 +13,16 @@ const clearWrongClosingJson = str => {
     return str;
 }
 
+const secondsToHms = (seconds, hour = false) => {
+    seconds = Number(seconds);
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor(seconds % 3600 / 60);
+    const s = Math.floor(seconds % 3600 % 60);
+    const hs = hour ? `${h < 10 ? '0' : ''}${h}:` : '';
+    return `${hs}${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+};
+
 export {
-    clearWrongClosingJson
+    clearWrongClosingJson,
+    secondsToHms
 };

@@ -21,3 +21,21 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+.video-area{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.video-area .slider{
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.noUi-tooltip {
+  display: none;
+}
+.noUi-active .noUi-tooltip {
+  display: block;
+}

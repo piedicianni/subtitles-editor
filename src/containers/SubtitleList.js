@@ -1,11 +1,18 @@
-import {useState} from 'react';
+import { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Subtitle from './Subtitle';
+import { EditorContext } from './Editor';
 
 function SubtitleList({ items = [] }) {
-    const [editingId, setEditingId] = useState(0);
+    const [editingId, setEditingId] = useState(-1);
 
-    const onSetEditing = (id = 0) => setEditingId(id);
+    const { setEditingItem } = useContext(EditorContext);
+
+    useEffect(() => {
+        setEditingItem(editingId > -1);
+    }, [editingId, setEditingItem])
+
+    const onSetEditing = (id = -1) => setEditingId(id);
 
     return (
         <div className='subtitle-list'>
@@ -15,8 +22,8 @@ function SubtitleList({ items = [] }) {
                         key={index}
                         id={parseInt(item.subtitle_id)}
                         text={item.text.join('')}
-                        inValue={parseFloat(item.start)}
-                        outValue={parseFloat(item.end)}
+                        start={parseFloat(item.start)}
+                        end={parseFloat(item.end)}
                         editing={editingId === parseInt(item.subtitle_id)}
                         onSetEditing={onSetEditing}
                     />

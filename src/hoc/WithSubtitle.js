@@ -1,8 +1,6 @@
 import { useState } from 'react';
 
 const WithSubtitle = WrappedComponent => function Component(props) {
-    const [inValue, setInValue] = useState(props.inValue);
-    const [outValue, setOutValue] = useState(props.outValue);
     const [text, setText] = useState(props.text);
 
     const onSubmit = (event) => {
@@ -14,9 +12,9 @@ const WithSubtitle = WrappedComponent => function Component(props) {
     return (
         <WrappedComponent
             {...props}
-            {...{ inValue, setInValue, outValue, setOutValue, text, setText, onSubmit }}
-            defInValue={props.inValue}
-            defOutValue={props.outValue}
+            {...{ text, setText, onSubmit }}
+            defSecIn={props.start}
+            defSecOut={props.end}
             defText={props.text}
         />
     )

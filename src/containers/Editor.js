@@ -1,12 +1,21 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import { infoVideo, subtitleList } from '../services/services';
 import { clearWrongClosingJson } from '../utils/utils';
 import SubtitleList from './SubtitleList';
 import VideoArea from './VideoArea';
 
+export const EditorContext = createContext();
+
 function Editor() {
     const [videoInfo, setVideoInfo] = useState({});
     const [items, setItems] = useState([]);
+    const [secIn, setSecIn] = useState(0);
+    const [secOut, setSecOut] = useState(0);
+    const [editingItem, setEditingItem] = useState(false);
+
+    useEffect(() => {
+        // console.log(secIn);
+    }, [secIn]);
 
     useEffect(() => {
         const [infoPromise, infoController] = infoVideo();
@@ -30,8 +39,17 @@ function Editor() {
 
     return (
         <>
-            <SubtitleList items={items}/>
-            <VideoArea {...videoInfo} />
+            <EditorContext.Provider value={{
+                secIn,
+                setSecIn,
+                secOut,
+                setSecOut,
+                editingItem,
+                setEditingItem
+            }}>
+                <SubtitleList items={items} />
+                <VideoArea {...videoInfo} />
+            </EditorContext.Provider>
         </>
     )
 }

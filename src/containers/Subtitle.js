@@ -1,17 +1,14 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, useContext } from 'react';
 import PropTypes from 'prop-types';
 import WithSubtitle from '../hoc/WithSubtitle';
 import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
 import SubtitleRow from '../components/SubtitleRow/SubtitleRow';
+import { EditorContext } from './Editor';
 
 function Subtitle({
     id,
-    defInValue,
-    inValue,
-    setInValue,
-    defOutValue,
-    outValue,
-    setOutValue,
+    defSecIn,
+    defSecOut,
     defText,
     text,
     setText,
@@ -20,11 +17,13 @@ function Subtitle({
     onSetEditing
 }) {
 
+    const {secIn, setSecIn, secOut, setSecOut} = useContext(EditorContext);
+    
     const reset = useCallback(() => {
-        setInValue(defInValue);
-        setOutValue(defOutValue);
+        setSecIn(defSecIn);
+        setSecOut(defSecOut);
         setText(defText);
-    }, [defInValue, defOutValue, defText, setInValue, setOutValue, setText]);
+    }, [defSecIn, defSecOut, defText, setSecIn, setSecOut, setText]);
 
     useEffect(() => {
         // if(!editing) return;
@@ -39,10 +38,17 @@ function Subtitle({
             {
                 !editing
                     ? <SubtitleRow
-                        {...{ id, text, inValue, outValue }}
+                        id={id}
+                        inValue={defSecIn}
+                        outValue={defSecOut}
+                        text={defText}
                         onClickEdit={() => onClickEdit()} />
                     : <SubtitleForm
-                        {...{ id, text, setText, inValue, setInValue, outValue, setOutValue, onSubmit }}
+                        {...{ id, text, setText, onSubmit }}
+                        inValue={secIn}
+                        setInValue={setSecIn}
+                        outValue={secOut}
+                        setOutValue={setSecOut}
                         onClickCancel={() => onClickCancel()}
                     />
             }
@@ -52,12 +58,8 @@ function Subtitle({
 
 Subtitle.propTypes = {
     id: PropTypes.number,
-    defInValue: PropTypes.number,
-    inValue: PropTypes.number,
-    setInValue: PropTypes.func,
-    defOutValue: PropTypes.number,
-    outValue: PropTypes.number,
-    setOutValue: PropTypes.func,
+    defSecIn: PropTypes.number,
+    defSecOut: PropTypes.number,
     defText: PropTypes.string,
     text: PropTypes.string,
     setText: PropTypes.func,
