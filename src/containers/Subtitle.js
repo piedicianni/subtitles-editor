@@ -10,6 +10,8 @@ function Subtitle({
     defSecIn,
     defSecOut,
     defText,
+    onSetSecIn,
+    onSetSecOut,
     text,
     setText,
     onSubmit,
@@ -17,17 +19,17 @@ function Subtitle({
     onSetEditing
 }) {
 
-    const {secIn, setSecIn, secOut, setSecOut} = useContext(EditorContext);
+    const { secIn, setSecIn, secOut, setSecOut } = useContext(EditorContext);
 
     const setDefaultValues = useCallback(() => {
         setSecIn(defSecIn);
         setSecOut(defSecOut);
         setText(defText);
     }, [defSecIn, defSecOut, defText, setSecIn, setSecOut, setText]);
- 
+
 
     useEffect(() => {
-        if(!editing) return;
+        if (!editing) return;
         setDefaultValues();
     }, [editing, setDefaultValues]);
 
@@ -47,9 +49,9 @@ function Subtitle({
                     : <SubtitleForm
                         {...{ id, text, setText, onSubmit }}
                         inValue={secIn}
-                        setInValue={setSecIn}
+                        setInValue={onSetSecIn}
                         outValue={secOut}
-                        setOutValue={setSecOut}
+                        setOutValue={onSetSecOut}
                         onClickCancel={() => onClickCancel()}
                     />
             }
@@ -62,6 +64,8 @@ Subtitle.propTypes = {
     defSecIn: PropTypes.number,
     defSecOut: PropTypes.number,
     defText: PropTypes.string,
+    onSetSecIn: PropTypes.func,
+    onSetSecOut: PropTypes.func,
     text: PropTypes.string,
     setText: PropTypes.func,
     onSubmit: PropTypes.func,

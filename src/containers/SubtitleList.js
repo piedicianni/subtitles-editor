@@ -6,11 +6,11 @@ import { EditorContext } from './Editor';
 function SubtitleList({ items = [] }) {
     const [editingId, setEditingId] = useState(-1);
 
-    const { setEditingItem } = useContext(EditorContext);
+    const { setIsEditingItem } = useContext(EditorContext);
 
     useEffect(() => {
-        setEditingItem(editingId > -1);
-    }, [editingId, setEditingItem])
+        setIsEditingItem(editingId > -1);
+    }, [editingId, setIsEditingItem]);
 
     const onSetEditing = (id = -1) => setEditingId(id);
 

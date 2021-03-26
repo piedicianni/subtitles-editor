@@ -57,14 +57,7 @@
   left: 4px !important;
 }
 
-.noUi-handle-lower .noUi-tooltip{
-  /* left: 0% !important;
-  transform: translate(-70%, 0) !important; */
-}
-
 .noUi-handle-upper .noUi-tooltip{
-  /* left: 100% !important;
-  transform: translate(-30%, 0) !important; */
   bottom: 0 !important;
   transform: translate(-50%, 120%) !important;
 }

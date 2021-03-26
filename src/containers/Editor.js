@@ -11,7 +11,7 @@ function Editor() {
     const [items, setItems] = useState([]);
     const [secIn, setSecIn] = useState(0);
     const [secOut, setSecOut] = useState(0);
-    const [editingItem, setEditingItem] = useState(false);
+    const [isEditingItem, setIsEditingItem] = useState(false);
 
     useEffect(() => {
         // console.log(secIn);
@@ -44,8 +44,8 @@ function Editor() {
                 setSecIn,
                 secOut,
                 setSecOut,
-                editingItem,
-                setEditingItem
+                isEditingItem,
+                setIsEditingItem
             }}>
                 <SubtitleList items={items} />
                 <VideoArea {...videoInfo} />
