@@ -35,7 +35,36 @@
 
 .noUi-tooltip {
   display: none;
+  padding: 2px !important;
+  font-size: 10px;
 }
 .noUi-active .noUi-tooltip {
   display: block;
+}
+
+.noUi-horizontal .noUi-handle{
+  width: 8px !important;
+  height: 28px !important;
+  right: -6px !important;
+  top: -6px !important;
+}
+
+.noUi-handle:before{
+  left: 1px !important;
+}
+
+.noUi-handle:after{
+  left: 4px !important;
+}
+
+.noUi-handle-lower .noUi-tooltip{
+  /* left: 0% !important;
+  transform: translate(-70%, 0) !important; */
+}
+
+.noUi-handle-upper .noUi-tooltip{
+  /* left: 100% !important;
+  transform: translate(-30%, 0) !important; */
+  bottom: 0 !important;
+  transform: translate(-50%, 120%) !important;
 }

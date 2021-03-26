@@ -16,7 +16,7 @@ function VideoArea(props) {
             {editingItem && (
                 <div className='slider'>
                     <Nouislider
-                        range={{ min: 0, max: 100 }}
+                        range={{ min: 0, max: 598 }}
                         start={[20, 80]}
                         onUpdate={(values, handle) => {
                             // if(handle === 0) editorContext.setSecIn(parseFloat(values[handle]));

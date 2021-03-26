@@ -18,17 +18,18 @@ function Subtitle({
 }) {
 
     const {secIn, setSecIn, secOut, setSecOut} = useContext(EditorContext);
-    
-    const reset = useCallback(() => {
+
+    const setDefaultValues = useCallback(() => {
         setSecIn(defSecIn);
         setSecOut(defSecOut);
         setText(defText);
     }, [defSecIn, defSecOut, defText, setSecIn, setSecOut, setText]);
+ 
 
     useEffect(() => {
-        // if(!editing) return;
-        reset();
-    }, [editing, reset]);
+        if(!editing) return;
+        setDefaultValues();
+    }, [editing, setDefaultValues]);
 
     const onClickEdit = () => onSetEditing(id);
     const onClickCancel = () => onSetEditing();
