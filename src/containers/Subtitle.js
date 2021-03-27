@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, memo } from 'react';
 import PropTypes from 'prop-types';
 import WithSubtitle from '../hoc/WithSubtitle';
 import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
@@ -31,7 +31,6 @@ function Subtitle({
             && secOut === defSecOut) return true;
         return everyArrayIndexsAreTrue(timeRangeAvailable);
     }; */
-
     return (
         <>
             {
@@ -72,4 +71,4 @@ Subtitle.propTypes = {
     onSetEditing: PropTypes.func
 };
 
-export default WithSubtitle(Subtitle);
+export default memo(WithSubtitle(Subtitle));

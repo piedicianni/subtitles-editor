@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Subtitle from './Subtitle';
 import { EditorContext } from './Editor';
@@ -14,21 +14,29 @@ function SubtitleList({ items = [] }) {
 
     useEffect(() => {
         setIsEditingItem(editingId > -1);
-        if (editingId > -1) onSetNew(-1);
-    }, [editingId, setIsEditingItem]);
+        // if (editingId > -1) onSetNew(-1);
+        if(newId > -1) divScrollBottom();
+    }, [editingId, setIsEditingItem, newId]);
 
     useEffect(() => {
-        setIsEditingItem(newId > -1);
-        newId > -1 && divScrollBottom();
-    }, [newId, setIsEditingItem]);
+        /* setIsEditingItem(newId > -1);
+        newId > -1 && divScrollBottom(); */
+        if(newId === -1) return;
+        setEditingId(newId);
+        // divScrollBottom();
+    }, [newId/* , setIsEditingItem */]);
 
-    const onSetEditing = (id = -1) => setEditingId(id);
+    const onSetEditing = useCallback((id = -1) => {
+        setEditingId(id);
+        onSetNew();
+    }, []);
+    
     const onSetNew = (id = -1) => setNewId(id);
     const divScrollBottom = (div = itemsDivRef.current) => {
         if (div) div.scrollTop = div.scrollHeight;
     };
     const onNew = () => {
-        onSetEditing();
+        // onSetEditing();
         onSetNew(nextId(items));
     };
 
@@ -36,9 +44,9 @@ function SubtitleList({ items = [] }) {
         <div className='subtitle-list'>
             <div className='items' ref={itemsDivRef}>
                 {
-                    items.map((item, index) => (
+                    items.map(item => (
                         <Subtitle
-                            key={index}
+                            key={parseInt(item.subtitle_id)}
                             id={parseInt(item.subtitle_id)}
                             text={item.text.join('')}
                             start={parseFloat(item.start)}
@@ -49,14 +57,14 @@ function SubtitleList({ items = [] }) {
                     ))
                 }
                 {
-                    newId > -1 &&
+                    (newId > -1 && editingId === newId) &&
                     <NewSubtitle
                         id={newId}
                         text={''}
                         start={0}
                         end={0}
                         editing={true}
-                        onCancel={() => onSetNew()}
+                        onCancel={() => onSetEditing()}
                     />
                 }
             </div>

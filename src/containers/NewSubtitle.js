@@ -7,9 +7,6 @@ import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
 
 function NewSubtitle({
     id,
-    defSecIn,
-    defSecOut,
-    defText,
     onSetSecIn,
     onSetSecOut,
     text,
@@ -37,9 +34,6 @@ function NewSubtitle({
 
 NewSubtitle.propTypes = {
     id: PropTypes.number,
-    defSecIn: PropTypes.number,
-    defSecOut: PropTypes.number,
-    defText: PropTypes.string,
     onSetSecIn: PropTypes.func,
     onSetSecOut: PropTypes.func,
     text: PropTypes.string,

@@ -14,20 +14,22 @@ const WithSubtitle = WrappedComponent => function Component(props) {
         setText(defText);
     }, [defSecIn, defSecOut, defText, setSecIn, setSecOut, setText]);
 
+    const onSetSecIn = useCallback((value) => {
+        if (areOnlyNumbersAndDots(value) && value < secOut) setSecIn(value);
+    }, [secOut, setSecIn]);
+
+    const onSetSecOut = useCallback((value) => areOnlyNumbersAndDots(value) && setSecOut(value), [setSecOut]);
+    
+    const onSubmit = useCallback((event) => {
+        !everyArrayIndexsAreTrue(timeRangeAvailable) && setDefaultValues();
+        // console.log('-> ' + id);
+        event.preventDefault();
+    }, [timeRangeAvailable, setDefaultValues]);
+
     useEffect(() => {
         if (!editing) return;
         setDefaultValues();
     }, [editing, setDefaultValues]);
-
-    const onSetSecIn = (value) => {
-        if (areOnlyNumbersAndDots(value) && value < secOut) setSecIn(value);
-    };
-    const onSetSecOut = (value) => areOnlyNumbersAndDots(value) && setSecOut(value);
-    const onSubmit = (event) => {
-        !everyArrayIndexsAreTrue(timeRangeAvailable) && setDefaultValues();
-        // console.log('-> ' + id);
-        event.preventDefault();
-    };
 
     Component.displayName = 'WithSubtitle';
 
