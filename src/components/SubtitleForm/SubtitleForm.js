@@ -10,7 +10,10 @@ function SubtitleForm({
     setInValue,
     outValue,
     setOutValue,
+    timeRangeAvailable,
     onSubmit,
+    formatedIn = '',
+    formatedOut = '',
     onClickCancel = () => { }
 }) {
     return (
@@ -23,7 +26,7 @@ function SubtitleForm({
                 <Form onSubmit={(e) => onSubmit(e)}>
                     <Form.Row>
                         <Form.Group as={Col}>
-                            <Form.Label>In:</Form.Label>
+                            <Form.Label>In: ({formatedIn})</Form.Label>
                             <Form.Control
                                 required
                                 size="sm"
@@ -33,7 +36,7 @@ function SubtitleForm({
                                 placeholder="In" />
                         </Form.Group>
                         <Form.Group as={Col}>
-                            <Form.Label>Out:</Form.Label>
+                            <Form.Label>Out: ({formatedOut})</Form.Label>
                             <Form.Control
                                 required
                                 size="sm"
@@ -43,6 +46,10 @@ function SubtitleForm({
                                 placeholder="Out" />
                         </Form.Group>
                     </Form.Row>
+                    {
+                        !timeRangeAvailable &&
+                            <span className='text-warning'>Range di tempo occupato!</span>
+                    }
                     <Form.Group>
                         <Form.Label>Sottotitoli:</Form.Label>
                         <Form.Control
@@ -55,7 +62,9 @@ function SubtitleForm({
                             placeholder="Sottotitoli" />
                     </Form.Group>
                     <div className='container-buttons'>
-                        <Button variant="outline-success" type="submit">Salva</Button>
+                        <Button
+                            variant="outline-success"
+                            type="submit">Salva</Button>
                         <Button
                             variant="outline-warning"
                             type="submit"
@@ -75,7 +84,10 @@ SubtitleForm.propTypes = {
     setInValue: PropTypes.func.isRequired,
     outValue: PropTypes.number.isRequired,
     setOutValue: PropTypes.func.isRequired,
+    timeRangeAvailable: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    formatedIn: PropTypes.string,
+    formatedOut: PropTypes.string,
     onClickCancel: PropTypes.func
 };
 

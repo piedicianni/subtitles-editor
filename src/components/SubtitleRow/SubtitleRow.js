@@ -21,8 +21,8 @@ function SubtitleRow({ id, text, inValue, outValue, onClickEdit = () => {} }) {
 SubtitleRow.propTypes = {
     id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
-    inValue: PropTypes.number.isRequired,
-    outValue: PropTypes.number.isRequired,
+    inValue: PropTypes.string.isRequired,
+    outValue: PropTypes.string.isRequired,
     onClickEdit: PropTypes.func
 }
 

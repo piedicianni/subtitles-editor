@@ -8,8 +8,21 @@
 
 .subtitle-list{
   width: 26rem;
-  overflow: auto;
   margin-right: 0.4rem;
+  overflow: auto;
+}
+
+.subtitle-list .items{
+  overflow: auto;
+  height: 92%;
+}
+
+.subtitle-list .container-buttons{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 8%;
+  background-color: #343a4014;
 }
 
 .subtitle-row, .subtitle-form{
@@ -22,6 +35,10 @@
   justify-content: space-between;
 }
 
+.subtitle-form .card-body .form-row .col{
+  margin-bottom: 0.4rem;
+}
+
 .video-area{
   display: flex;
   flex-direction: column;
@@ -31,6 +48,30 @@
 .video-area .slider{
   width: 100%;
   margin-top: 0.5rem;
+}
+
+.video-area .player{
+  position: relative;
+}
+
+.video-area .player .subtitle-overlay{
+  position: absolute;
+  z-index: 2;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: auto;
+  background-color: #00000094;
+  border-radius: 2px;
+  color: white;
+  padding: 4px;
+}
+
+.video-area .player .subtitle-overlay p{
+  margin: 0;
+  text-align: center;
+  white-space: pre-wrap;
 }
 
 .noUi-tooltip {
@@ -70,6 +111,6 @@
 }
 
 .form-group input, .form-group input:focus, .form-group textarea, .form-group textarea:focus{
-  background-color: #212529;
+  background-color: #ffffff1f;
   color: white;
 }

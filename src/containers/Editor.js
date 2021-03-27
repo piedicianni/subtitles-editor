@@ -3,6 +3,7 @@ import { infoVideo, subtitleList } from '../services/services';
 import { clearWrongClosingJson } from '../utils/utils';
 import SubtitleList from './SubtitleList';
 import VideoArea from './VideoArea';
+import { rangeIsAvailable } from '../utils/utils';
 
 export const EditorContext = createContext();
 
@@ -12,10 +13,17 @@ function Editor() {
     const [secIn, setSecIn] = useState(0);
     const [secOut, setSecOut] = useState(0);
     const [isEditingItem, setIsEditingItem] = useState(false);
+    const [timeRangeAvailable, setTimeRangeAvailable] = useState([false, false]);
 
     useEffect(() => {
-        // console.log(secIn);
-    }, [secIn]);
+        if (!isEditingItem) return;
+        setTimeRangeAvailable(prevState => [rangeIsAvailable(secIn, items), prevState[1]]);
+    }, [secIn, items, isEditingItem]);
+
+    useEffect(() => {
+        if (!isEditingItem) return;
+        setTimeRangeAvailable(prevState => [prevState[0], rangeIsAvailable(secOut, items)]);
+    }, [secOut, items, isEditingItem]);
 
     useEffect(() => {
         const [infoPromise, infoController] = infoVideo();
@@ -45,10 +53,11 @@ function Editor() {
                 secOut,
                 setSecOut,
                 isEditingItem,
-                setIsEditingItem
+                setIsEditingItem,
+                timeRangeAvailable
             }}>
                 <SubtitleList items={items} />
-                <VideoArea {...videoInfo} />
+                <VideoArea items={items} {...videoInfo} />
             </EditorContext.Provider>
         </>
     )

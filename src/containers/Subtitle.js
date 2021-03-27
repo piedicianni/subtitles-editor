@@ -1,9 +1,10 @@
-import { useEffect, useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import WithSubtitle from '../hoc/WithSubtitle';
 import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
 import SubtitleRow from '../components/SubtitleRow/SubtitleRow';
 import { EditorContext } from './Editor';
+import { secondsToHms, everyArrayIndexsAreTrue } from '../utils/utils';
 
 function Subtitle({
     id,
@@ -19,22 +20,17 @@ function Subtitle({
     onSetEditing
 }) {
 
-    const { secIn, setSecIn, secOut, setSecOut } = useContext(EditorContext);
-
-    const setDefaultValues = useCallback(() => {
-        setSecIn(defSecIn);
-        setSecOut(defSecOut);
-        setText(defText);
-    }, [defSecIn, defSecOut, defText, setSecIn, setSecOut, setText]);
-
-
-    useEffect(() => {
-        if (!editing) return;
-        setDefaultValues();
-    }, [editing, setDefaultValues]);
+    const { secIn, secOut, timeRangeAvailable } = useContext(EditorContext);
 
     const onClickEdit = () => onSetEditing(id);
     const onClickCancel = () => onSetEditing();
+    /* const checkTimeRangeAvailable = () => {
+        console.log(secIn, defSecIn)
+        if (!everyArrayIndexsAreTrue(timeRangeAvailable)
+            && secIn === defSecIn
+            && secOut === defSecOut) return true;
+        return everyArrayIndexsAreTrue(timeRangeAvailable);
+    }; */
 
     return (
         <>
@@ -42,8 +38,8 @@ function Subtitle({
                 !editing
                     ? <SubtitleRow
                         id={id}
-                        inValue={defSecIn}
-                        outValue={defSecOut}
+                        inValue={secondsToHms(defSecIn)}
+                        outValue={secondsToHms(defSecOut)}
                         text={defText}
                         onClickEdit={() => onClickEdit()} />
                     : <SubtitleForm
@@ -52,6 +48,9 @@ function Subtitle({
                         setInValue={onSetSecIn}
                         outValue={secOut}
                         setOutValue={onSetSecOut}
+                        timeRangeAvailable={everyArrayIndexsAreTrue(timeRangeAvailable)}
+                        formatedIn={secondsToHms(secIn)}
+                        formatedOut={secondsToHms(secOut)}
                         onClickCancel={() => onClickCancel()}
                     />
             }
