@@ -1,4 +1,4 @@
-import {memo } from 'react';
+import { memo } from 'react';
 import PropTypes from 'prop-types';
 import WithSubtitle from '../hoc/WithSubtitle';
 import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
@@ -10,19 +10,19 @@ function Subtitle({
     defSecIn,
     defSecOut,
     defText,
-	text,
-	setText,
-	editing,
-	setSecSeek,
-	secIn,
-	onSetSecIn,
-	secOut,
-	onSetSecOut,
-	onSubmit,
-	timeRangeAvailable,
-	onSetEditing
+    text,
+    setText,
+    editing,
+    setSecSeek,
+    secIn,
+    onSetSecIn,
+    secOut,
+    onSetSecOut,
+    onSubmit,
+    timeRangeAvailable,
+    onSetEditing
 }) {
-    
+
     const onClickPreview = () => setSecSeek(defSecIn);
     const onClickEdit = () => onSetEditing(id);
     const onClickCancel = () => onSetEditing();
