@@ -19,13 +19,18 @@ function VideoArea(props) {
     const [pause, setPause] = useState(true);
     const [secPlayed, setSecPlayed] = useState(0);
     const [subtitleOnScreen, setSubtitleOnScreen] = useState('');
-    const { isEditingItem, secIn, setSecIn, secOut, setSecOut } = useContext(EditorContext);
+    const { secSeek, isEditingItem, secIn, setSecIn, secOut, setSecOut } = useContext(EditorContext);
     const playerRef = useRef(null);
 
     const subtitleText = useMemo(() => {
         if (isEditingItem) return;
         return onVideoPlaying();
     }, [isEditingItem]);
+
+    useEffect(() => {
+        if (secSeek === 0 || isEditingItem) return;
+        playerRef.current.seekTo(secSeek);
+    }, [secSeek, isEditingItem]);
 
     useEffect(() => {
         if (secIn === 0) return;
@@ -47,6 +52,8 @@ function VideoArea(props) {
         setPause(true);
     }, [isEditingItem]);
 
+    const onSetSecPlayed = (value) => setSecPlayed(parseFloat((value).toFixed(2)));
+
     return (
         <div className='video-area'>
             <div className='player'>
@@ -57,8 +64,8 @@ function VideoArea(props) {
                     playing={!pause}
                     onPlay={() => setPause(false)}
                     onPause={() => setPause(true)}
-                    onProgress={(params) => setSecPlayed(Math.ceil(params.playedSeconds))}
-                    onSeek={(sec) => setSecPlayed(Math.ceil(sec))}
+                    onProgress={(params) => onSetSecPlayed(params.playedSeconds)}
+                    onSeek={(sec) => onSetSecPlayed(sec)}
                     /* width={props.width}
                     height={props.height} */ />
                 {

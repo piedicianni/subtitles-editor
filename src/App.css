@@ -29,6 +29,10 @@
   width: 100%;
 }
 
+.subtitle-row{
+  cursor: pointer;
+}
+
 .subtitle-form .card-body .container-buttons{
   display: flex;
   flex-direction: row;
@@ -63,7 +67,7 @@
   width: 70%;
   height: auto;
   background-color: #00000094;
-  border-radius: 2px;
+  border-radius: 4px;
   color: white;
   padding: 4px;
 }

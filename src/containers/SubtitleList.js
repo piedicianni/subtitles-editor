@@ -9,7 +9,15 @@ import NewSubtitle from './NewSubtitle';
 function SubtitleList({ items = [] }) {
     const [editingId, setEditingId] = useState(-1);
     const [creatingId, setCreatingId] = useState(-1);
-    const { setIsEditingItem } = useContext(EditorContext);
+    const {
+        setSecSeek,
+        secIn,
+        setSecIn,
+        secOut,
+        setSecOut,
+        setIsEditingItem,
+        timeRangeAvailable
+    } = useContext(EditorContext);
     const itemsDivRef = useRef(null);
 
     useEffect(() => {
@@ -24,7 +32,7 @@ function SubtitleList({ items = [] }) {
 
     const onSetEditing = useCallback((id = -1) => setEditingId(id), []);
     const undoEditing = () => onSetEditing();
-    
+
     const onSetCreating = (id = -1) => setCreatingId(id);
     const undoCreating = () => onSetCreating();
 
@@ -34,6 +42,11 @@ function SubtitleList({ items = [] }) {
     const onClickNew = () => {
         undoEditing();
         onSetCreating(nextId(items));
+    };
+    
+    const updateItem = ({ id, secIn, secOut, text }) => {
+        const existItem = items.find(item => parseInt(item.subtitle_id) === id);
+        console.log(existItem)
     };
 
     return (
@@ -49,6 +62,15 @@ function SubtitleList({ items = [] }) {
                             end={parseFloat(item.end)}
                             editing={editingId === parseInt(item.subtitle_id)}
                             onSetEditing={onSetEditing}
+                            setSecSeek={setSecSeek}
+                            {...(editingId === parseInt(item.subtitle_id) && {
+                                onUpdate: updateItem,
+                                secIn,
+                                setSecIn,
+                                secOut,
+                                setSecOut,
+                                timeRangeAvailable
+                            })}
                         />
                     ))
                 }
@@ -60,6 +82,13 @@ function SubtitleList({ items = [] }) {
                         start={0}
                         end={0}
                         editing={true}
+                        {...{
+                            secIn,
+                            setSecIn,
+                            secOut,
+                            setSecOut,
+                            timeRangeAvailable
+                        }}
                         onCancel={() => undoCreating()}
                     />
                 }

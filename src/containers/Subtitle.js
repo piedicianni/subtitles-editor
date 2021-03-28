@@ -1,9 +1,8 @@
-import { useContext, memo } from 'react';
+import {memo } from 'react';
 import PropTypes from 'prop-types';
 import WithSubtitle from '../hoc/WithSubtitle';
 import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
 import SubtitleRow from '../components/SubtitleRow/SubtitleRow';
-import { EditorContext } from './Editor';
 import { secondsToHms, everyArrayIndexsAreTrue } from '../utils/utils';
 
 function Subtitle({
@@ -11,17 +10,20 @@ function Subtitle({
     defSecIn,
     defSecOut,
     defText,
-    onSetSecIn,
-    onSetSecOut,
-    text,
-    setText,
-    onSubmit,
-    editing,
-    onSetEditing
+	text,
+	setText,
+	editing,
+	setSecSeek,
+	secIn,
+	onSetSecIn,
+	secOut,
+	onSetSecOut,
+	onSubmit,
+	timeRangeAvailable,
+	onSetEditing
 }) {
-
-    const { secIn, secOut, timeRangeAvailable } = useContext(EditorContext);
-
+    
+    const onClickPreview = () => setSecSeek(defSecIn);
     const onClickEdit = () => onSetEditing(id);
     const onClickCancel = () => onSetEditing();
     /* const checkTimeRangeAvailable = () => {
@@ -40,6 +42,7 @@ function Subtitle({
                         inValue={secondsToHms(defSecIn)}
                         outValue={secondsToHms(defSecOut)}
                         text={defText}
+                        onClickPreview={() => onClickPreview()}
                         onClickEdit={() => onClickEdit()} />
                     : <SubtitleForm
                         {...{ id, text, setText, onSubmit }}
@@ -62,12 +65,16 @@ Subtitle.propTypes = {
     defSecIn: PropTypes.number,
     defSecOut: PropTypes.number,
     defText: PropTypes.string,
-    onSetSecIn: PropTypes.func,
-    onSetSecOut: PropTypes.func,
     text: PropTypes.string,
     setText: PropTypes.func,
-    onSubmit: PropTypes.func,
     editing: PropTypes.bool,
+    setSecSeek: PropTypes.func,
+    secIn: PropTypes.number,
+    onSetSecIn: PropTypes.func,
+    secOut: PropTypes.number,
+    onSetSecOut: PropTypes.func,
+    onSubmit: PropTypes.func,
+    timeRangeAvailable: PropTypes.array,
     onSetEditing: PropTypes.func
 };
 

@@ -1,20 +1,20 @@
-import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import WithSubtitle from '../hoc/WithSubtitle';
-import { EditorContext } from './Editor';
 import { secondsToHms, everyArrayIndexsAreTrue } from '../utils/utils';
 import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
 
 function NewSubtitle({
     id,
-    onSetSecIn,
-    onSetSecOut,
     text,
     setText,
+    secIn,
+    onSetSecIn,
+    secOut,
+    onSetSecOut,
     onSubmit,
+    timeRangeAvailable,
     onCancel
 }) {
-    const { secIn, secOut, timeRangeAvailable } = useContext(EditorContext);
     const onClickCancel = () => onCancel();
     
     return (
@@ -34,11 +34,14 @@ function NewSubtitle({
 
 NewSubtitle.propTypes = {
     id: PropTypes.number,
-    onSetSecIn: PropTypes.func,
-    onSetSecOut: PropTypes.func,
     text: PropTypes.string,
     setText: PropTypes.func,
+    secIn: PropTypes.number,
+    onSetSecIn: PropTypes.func,
+    secOut: PropTypes.number,
+    onSetSecOut: PropTypes.func,
     onSubmit: PropTypes.func,
+    timeRangeAvailable: PropTypes.array,
     onCancel: PropTypes.func
 };
 

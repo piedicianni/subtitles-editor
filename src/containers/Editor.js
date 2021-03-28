@@ -10,6 +10,7 @@ export const EditorContext = createContext();
 function Editor() {
     const [videoInfo, setVideoInfo] = useState({});
     const [items, setItems] = useState([]);
+    const [secSeek, setSecSeek] = useState(0);
     const [secIn, setSecIn] = useState(0);
     const [secOut, setSecOut] = useState(0);
     const [isEditingItem, setIsEditingItem] = useState(false);
@@ -48,6 +49,8 @@ function Editor() {
     return (
         <>
             <EditorContext.Provider value={{
+                secSeek,
+                setSecSeek,
                 secIn,
                 setSecIn,
                 secOut,

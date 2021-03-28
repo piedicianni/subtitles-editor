@@ -1,13 +1,24 @@
-import { useState, useContext, useCallback, useEffect } from 'react';
-import { areOnlyNumbersAndDots } from '../utils/utils';
-import { EditorContext } from '../containers/Editor';
-import { everyArrayIndexsAreTrue } from '../utils/utils';
+import { useState, useCallback, useEffect } from 'react';
+import { areOnlyNumbersAndDots, everyArrayIndexsAreTrue } from '../utils/utils';
 
 const WithSubtitle = WrappedComponent => function Component(props) {
     const [text, setText] = useState(props.text);
-    const { setSecIn, secOut, setSecOut, timeRangeAvailable } = useContext(EditorContext);
-    const { id, editing, start: defSecIn, end: defSecOut, text: defText, ...restProps } = props;
-    
+    const {
+        id,
+        editing,
+        start: defSecIn,
+        end: defSecOut,
+        text: defText,
+        onUpdate,
+        setSecSeek,
+        secIn,
+        setSecIn,
+        secOut,
+        setSecOut,
+        timeRangeAvailable,
+        ...restProps
+    } = props;
+
     const setDefaultValues = useCallback(() => {
         setSecIn(defSecIn);
         setSecOut(defSecOut);
@@ -19,12 +30,18 @@ const WithSubtitle = WrappedComponent => function Component(props) {
     }, [secOut, setSecIn]);
 
     const onSetSecOut = useCallback((value) => areOnlyNumbersAndDots(value) && setSecOut(value), [setSecOut]);
-    
-    const onSubmit = useCallback((event) => {
-        !everyArrayIndexsAreTrue(timeRangeAvailable) && setDefaultValues();
-        // console.log('-> ' + id);
+
+    const onSubmit = (event) => {
+        const rangeAvail = everyArrayIndexsAreTrue(timeRangeAvailable);
+        !rangeAvail && setDefaultValues();
+        onUpdate({
+            id: id,
+            secIn: !rangeAvail ? defSecIn : secIn,
+            secOut: !rangeAvail ? defSecOut : secOut,
+            text: text
+        });
         event.preventDefault();
-    }, [timeRangeAvailable, setDefaultValues]);
+    };
 
     useEffect(() => {
         if (!editing) return;
@@ -35,10 +52,25 @@ const WithSubtitle = WrappedComponent => function Component(props) {
 
     return (
         <WrappedComponent
+            {...{
+                id,
+                defSecIn,
+                defSecOut,
+                defText,
+                text,
+                setText,
+                editing,
+                setSecSeek
+            }}
+            {...(editing && {
+                secIn,
+                onSetSecIn,
+                secOut,
+                onSetSecOut,
+                onSubmit,
+                timeRangeAvailable
+            })}
             {...restProps}
-            {...{ id, editing, text, setText, onSubmit, defSecIn, defSecOut, defText }}
-            onSetSecIn={onSetSecIn}
-            onSetSecOut={onSetSecOut}
         />
     )
 }
