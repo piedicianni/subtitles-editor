@@ -8,36 +8,32 @@ import NewSubtitle from './NewSubtitle';
 
 function SubtitleList({ items = [] }) {
     const [editingId, setEditingId] = useState(-1);
-    const [newId, setNewId] = useState(-1);
+    const [creatingId, setCreatingId] = useState(-1);
     const { setIsEditingItem } = useContext(EditorContext);
     const itemsDivRef = useRef(null);
 
     useEffect(() => {
         setIsEditingItem(editingId > -1);
-        // if (editingId > -1) onSetNew(-1);
-        if(newId > -1) divScrollBottom();
-    }, [editingId, setIsEditingItem, newId]);
+        editingId > -1 && setCreatingId(-1);
+    }, [editingId, setIsEditingItem]);
 
     useEffect(() => {
-        /* setIsEditingItem(newId > -1);
-        newId > -1 && divScrollBottom(); */
-        if(newId === -1) return;
-        setEditingId(newId);
-        // divScrollBottom();
-    }, [newId/* , setIsEditingItem */]);
+        editingId === -1 && setIsEditingItem(creatingId > -1);
+        creatingId > -1 && divScrollBottom();
+    }, [creatingId, editingId, setIsEditingItem]);
 
-    const onSetEditing = useCallback((id = -1) => {
-        setEditingId(id);
-        onSetNew();
-    }, []);
+    const onSetEditing = useCallback((id = -1) => setEditingId(id), []);
+    const undoEditing = () => onSetEditing();
     
-    const onSetNew = (id = -1) => setNewId(id);
+    const onSetCreating = (id = -1) => setCreatingId(id);
+    const undoCreating = () => onSetCreating();
+
     const divScrollBottom = (div = itemsDivRef.current) => {
         if (div) div.scrollTop = div.scrollHeight;
     };
-    const onNew = () => {
-        // onSetEditing();
-        onSetNew(nextId(items));
+    const onClickNew = () => {
+        undoEditing();
+        onSetCreating(nextId(items));
     };
 
     return (
@@ -57,21 +53,21 @@ function SubtitleList({ items = [] }) {
                     ))
                 }
                 {
-                    (newId > -1 && editingId === newId) &&
+                    creatingId > -1 &&
                     <NewSubtitle
-                        id={newId}
+                        id={creatingId}
                         text={''}
                         start={0}
                         end={0}
                         editing={true}
-                        onCancel={() => onSetEditing()}
+                        onCancel={() => undoCreating()}
                     />
                 }
             </div>
             <div className='container-buttons'>
                 <Button
                     variant="outline-dark"
-                    onClick={() => onNew()}>Crea sottotitolo</Button>
+                    onClick={() => onClickNew()}>Crea sottotitolo</Button>
             </div>
         </div>
     )
