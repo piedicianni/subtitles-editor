@@ -2,7 +2,7 @@
 
 ## Functionality overview
 
-This React.js application allow you to modify and create video subtitles;
+This React.js application allow you to modify and create video subtitles.
 
 **General functionality:**
 
