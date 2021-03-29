@@ -28,3 +28,9 @@ This React.js application allow you to modify and create video subtitles.
 - [React bootstrap](https://react-bootstrap.github.io)
 - [React player](https://www.npmjs.com/package/react-player)
 - [Nouislider react](https://www.npmjs.com/package/nouislider-react)
+
+## Run app
+
+### `npm start`
+Runs the app in the development mode.<br />
+Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
