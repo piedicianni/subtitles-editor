@@ -51,7 +51,8 @@ const storeItem = (item) => {
     const storage = getItem(LOCAL_STORAGE_KEY_ITEMS);
     if (storage.error) return;
     const prevStored = JSON.parse(storage)?.items ?? [];
-    if (prevStored.some(sub => sub.subtitle_id === item.subtitle_id)) return;
+    const existItem = prevStored.findIndex(sub => sub.subtitle_id === item.subtitle_id);
+    if (existItem > -1) prevStored.splice(existItem, 1);
     const resp = setItem(LOCAL_STORAGE_KEY_ITEMS, JSON.stringify(
         {
             items: [...prevStored, { ...item }]

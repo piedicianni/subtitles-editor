@@ -57,14 +57,6 @@ function SubtitleList({ items = [], setItems }) {
             start: secIn,
             end: secOut
         };
-        /* const copy = [];
-        items.forEach(item => copy.push({ ...item }));
-        const existItemIndex = copy.findIndex(item => parseInt(item.subtitle_id) === id);
-        // modify or add item
-        if (existItemIndex > -1) copy.splice(existItemIndex, 1, itemUpdated);
-        else copy.push(itemUpdated);
-        // order items
-        const sorted = copy.sort((a, b) => parseFloat(a.start) - parseFloat(b.start)); */
         const itemRes = sortItems(addOrUpdateItem(item, items));
         storeItem(item);
         setItems(itemRes);

@@ -26,13 +26,11 @@ function Subtitle({
     const onClickPreview = () => setSecSeek(defSecIn);
     const onClickEdit = () => onSetEditing(id);
     const onClickCancel = () => onSetEditing();
-    /* const checkTimeRangeAvailable = () => {
-        console.log(secIn, defSecIn)
-        if (!everyArrayIndexsAreTrue(timeRangeAvailable)
-            && secIn === defSecIn
-            && secOut === defSecOut) return true;
-        return everyArrayIndexsAreTrue(timeRangeAvailable);
-    }; */
+    const isRangeAvailable = () => {
+        if(secIn === defSecIn && secOut === defSecOut) return true;
+        return timeRangeAvailable;
+    };
+
     return (
         <>
             {
@@ -50,7 +48,7 @@ function Subtitle({
                         setInValue={onSetSecIn}
                         outValue={secOut}
                         setOutValue={onSetSecOut}
-                        timeRangeAvailable={timeRangeAvailable}
+                        timeRangeAvailable={isRangeAvailable()}
                         formatedIn={secondsToHms(secIn)}
                         formatedOut={secondsToHms(secOut)}
                         onClickCancel={() => onClickCancel()}
