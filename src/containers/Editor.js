@@ -1,9 +1,9 @@
 import { useEffect, useState, createContext } from 'react';
-import { infoVideo, subtitleList } from '../services/services';
+import { infoVideo, subtitleList, storedSubtitles } from '../services/services';
 import { clearWrongClosingJson } from '../utils/utils';
 import SubtitleList from './SubtitleList';
 import VideoArea from './VideoArea';
-import { rangeIsAvailable } from '../utils/utils';
+import { rangeIsAvailable, mergeItemsAndStored } from '../utils/utils';
 
 export const EditorContext = createContext();
 
@@ -14,9 +14,10 @@ function Editor() {
     const [secIn, setSecIn] = useState(0);
     const [secOut, setSecOut] = useState(0);
     const [isEditingItem, setIsEditingItem] = useState(false);
-    const [timeRangeAvailable, setTimeRangeAvailable] = useState([false, false]);
+    // const [timeRangeAvailable, setTimeRangeAvailable] = useState([false, false]);
+    const [timeRangeAvailable, setTimeRangeAvailable] = useState(false);
 
-    useEffect(() => {
+    /* useEffect(() => {
         if (!isEditingItem) return;
         setTimeRangeAvailable(prevState => [rangeIsAvailable(secIn, items), prevState[1]]);
     }, [secIn, items, isEditingItem]);
@@ -24,7 +25,12 @@ function Editor() {
     useEffect(() => {
         if (!isEditingItem) return;
         setTimeRangeAvailable(prevState => [prevState[0], rangeIsAvailable(secOut, items)]);
-    }, [secOut, items, isEditingItem]);
+    }, [secOut, items, isEditingItem]); */
+
+    useEffect(() => {
+        if (!isEditingItem) return;
+        setTimeRangeAvailable(rangeIsAvailable(secIn, secOut, items));
+    }, [secIn, secOut, items, isEditingItem]);
 
     useEffect(() => {
         const [infoPromise, infoController] = infoVideo();
@@ -37,7 +43,10 @@ function Editor() {
 
         const [listPromise, listController] = subtitleList();
         listPromise()
-            .then(res => setItems(res))
+            .then(res => {
+                const mergedItems = mergeItemsAndStored(res, storedSubtitles())
+                setItems(mergedItems);
+            })
             .catch(error => console.log(error));
 
         return () => {
@@ -59,7 +68,7 @@ function Editor() {
                 setIsEditingItem,
                 timeRangeAvailable
             }}>
-                <SubtitleList items={items} />
+                <SubtitleList items={items} setItems={setItems} />
                 <VideoArea items={items} {...videoInfo} />
             </EditorContext.Provider>
         </>

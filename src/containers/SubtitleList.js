@@ -3,10 +3,16 @@ import PropTypes from 'prop-types';
 import Subtitle from './Subtitle';
 import { EditorContext } from './Editor';
 import { Button } from 'react-bootstrap';
-import { nextId } from '../utils/utils';
+import { nextId, addOrUpdateItem, sortItems } from '../utils/utils';
 import NewSubtitle from './NewSubtitle';
+import { storeItem } from '../services/services';
 
-function SubtitleList({ items = [] }) {
+const initialStartAndEndNewItem = {
+    start: 1,
+    end: 2
+};
+
+function SubtitleList({ items = [], setItems }) {
     const [editingId, setEditingId] = useState(-1);
     const [creatingId, setCreatingId] = useState(-1);
     const {
@@ -43,10 +49,27 @@ function SubtitleList({ items = [] }) {
         undoEditing();
         onSetCreating(nextId(items));
     };
-    
+
     const updateItem = ({ id, secIn, secOut, text }) => {
-        const existItem = items.find(item => parseInt(item.subtitle_id) === id);
-        console.log(existItem)
+        const item = {
+            subtitle_id: id,
+            text: [text],
+            start: secIn,
+            end: secOut
+        };
+        /* const copy = [];
+        items.forEach(item => copy.push({ ...item }));
+        const existItemIndex = copy.findIndex(item => parseInt(item.subtitle_id) === id);
+        // modify or add item
+        if (existItemIndex > -1) copy.splice(existItemIndex, 1, itemUpdated);
+        else copy.push(itemUpdated);
+        // order items
+        const sorted = copy.sort((a, b) => parseFloat(a.start) - parseFloat(b.start)); */
+        const itemRes = sortItems(addOrUpdateItem(item, items));
+        storeItem(item);
+        setItems(itemRes);
+        undoEditing();
+        undoCreating();
     };
 
     return (
@@ -79,10 +102,11 @@ function SubtitleList({ items = [] }) {
                     <NewSubtitle
                         id={creatingId}
                         text={''}
-                        start={0}
-                        end={0}
+                        start={initialStartAndEndNewItem.start}
+                        end={initialStartAndEndNewItem.end}
                         editing={true}
                         {...{
+                            onUpdate: updateItem,
                             secIn,
                             setSecIn,
                             secOut,
@@ -103,7 +127,8 @@ function SubtitleList({ items = [] }) {
 }
 
 SubtitleList.propTypes = {
-    items: PropTypes.array
+    items: PropTypes.array.isRequired,
+    setItems: PropTypes.func.isRequired
 }
 
 export default SubtitleList;

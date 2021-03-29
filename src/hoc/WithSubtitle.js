@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { areOnlyNumbersAndDots, everyArrayIndexsAreTrue } from '../utils/utils';
+import { areOnlyNumbersAndDots } from '../utils/utils';
 
 const WithSubtitle = WrappedComponent => function Component(props) {
     const [text, setText] = useState(props.text);
@@ -26,13 +26,16 @@ const WithSubtitle = WrappedComponent => function Component(props) {
     }, [defSecIn, defSecOut, defText, setSecIn, setSecOut, setText]);
 
     const onSetSecIn = useCallback((value) => {
-        if (areOnlyNumbersAndDots(value) && value < secOut) setSecIn(value);
-    }, [secOut, setSecIn]);
+        if (areOnlyNumbersAndDots(value)){
+            setSecIn(value);
+            value > secOut && setSecOut(value + 1);
+        }
+    }, [secOut, setSecIn, setSecOut]);
 
     const onSetSecOut = useCallback((value) => areOnlyNumbersAndDots(value) && setSecOut(value), [setSecOut]);
 
     const onSubmit = (event) => {
-        const rangeAvail = everyArrayIndexsAreTrue(timeRangeAvailable);
+        const rangeAvail = timeRangeAvailable;
         !rangeAvail && setDefaultValues();
         onUpdate({
             id: id,

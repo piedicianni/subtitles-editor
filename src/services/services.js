@@ -1,4 +1,4 @@
-import { INFO_JSON, SUBTITLE_LIST } from '../constants/constants';
+import { INFO_JSON, SUBTITLE_LIST, LOCAL_STORAGE_KEY_ITEMS } from '../constants/constants';
 
 const handlerError = (error) => Promise.reject(error);
 
@@ -19,8 +19,26 @@ const fetchData = (url, params = { responseType: 'json' }) => {
     return [start, controller];
 };
 
+// method local storage
+const getItem = (key) => {
+    if (typeof (Storage) !== 'undefined') {
+        return !localStorage.getItem(key) ? '{}' : localStorage.getItem(key);
+    } else {
+        return { error: true, description: 'Storage not supported' };
+    }
+};
+
+const setItem = (key, value) => {
+    if (typeof (Storage) !== 'undefined') {
+        localStorage.setItem(key, value);
+        return value;
+    } else {
+        return { error: true, description: 'Storage not supported' };
+    }
+};
+
 const infoVideo = () => {
-    const [promise, controller] = fetchData(INFO_JSON, {responseType: 'text'});
+    const [promise, controller] = fetchData(INFO_JSON, { responseType: 'text' });
     return [promise, controller];
 };
 
@@ -29,8 +47,29 @@ const subtitleList = () => {
     return [promise, controller];
 };
 
+const storeItem = (item) => {
+    const storage = getItem(LOCAL_STORAGE_KEY_ITEMS);
+    if (storage.error) return;
+    const prevStored = JSON.parse(storage)?.items ?? [];
+    if (prevStored.some(sub => sub.subtitle_id === item.subtitle_id)) return;
+    const resp = setItem(LOCAL_STORAGE_KEY_ITEMS, JSON.stringify(
+        {
+            items: [...prevStored, { ...item }]
+        })
+    );
+    return resp;
+};
+
+const storedSubtitles = () => {
+    const storage = getItem(LOCAL_STORAGE_KEY_ITEMS);
+    if (!storage.error) return JSON.parse(storage)?.items ?? [];
+    return [];
+};
+
 export {
     handlerError,
     infoVideo,
-    subtitleList
+    subtitleList,
+    storeItem,
+    storedSubtitles
 };

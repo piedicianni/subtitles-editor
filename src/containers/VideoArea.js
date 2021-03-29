@@ -52,7 +52,8 @@ function VideoArea(props) {
         setPause(true);
     }, [isEditingItem]);
 
-    const onSetSecPlayed = (value) => setSecPlayed(parseFloat((value).toFixed(2)));
+    // const onSetSecPlayed = (value) => setSecPlayed(parseFloat((value).toFixed(2)));
+    const onSetSecPlayed = (value) => setSecPlayed(Math.ceil(value));
 
     return (
         <div className='video-area'>

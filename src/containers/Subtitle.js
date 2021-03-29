@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import WithSubtitle from '../hoc/WithSubtitle';
 import SubtitleForm from '../components/SubtitleForm/SubtitleForm';
 import SubtitleRow from '../components/SubtitleRow/SubtitleRow';
-import { secondsToHms, everyArrayIndexsAreTrue } from '../utils/utils';
+import { secondsToHms } from '../utils/utils';
 
 function Subtitle({
     id,
@@ -50,7 +50,7 @@ function Subtitle({
                         setInValue={onSetSecIn}
                         outValue={secOut}
                         setOutValue={onSetSecOut}
-                        timeRangeAvailable={everyArrayIndexsAreTrue(timeRangeAvailable)}
+                        timeRangeAvailable={timeRangeAvailable}
                         formatedIn={secondsToHms(secIn)}
                         formatedOut={secondsToHms(secOut)}
                         onClickCancel={() => onClickCancel()}
@@ -74,7 +74,7 @@ Subtitle.propTypes = {
     secOut: PropTypes.number,
     onSetSecOut: PropTypes.func,
     onSubmit: PropTypes.func,
-    timeRangeAvailable: PropTypes.array,
+    timeRangeAvailable: PropTypes.bool,
     onSetEditing: PropTypes.func
 };
 

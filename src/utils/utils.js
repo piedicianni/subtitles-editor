@@ -16,30 +16,42 @@ const secondsToHms = (seconds) => {
     const h = Math.floor(seconds / 3600);
     const m = Math.floor(seconds % 3600 / 60);
     const s = Math.floor(seconds % 3600 % 60);
-    
+
     const fm = (value) => `${value < 10 ? '0' : ''}${value}`;
     return `${h > 0 ? fm(h) + ':' : ''}${fm(m)}:${fm(s)}`;
 };
 const areOnlyNumbersAndDots = value => (/^\d*\.?\d*$/).test(value);
-const convertToSeconds = (n) => n/1000;
+const convertToSeconds = (n) => n / 1000;
 const nextId = items => Math.max.apply(Math, items.map(item => parseInt(item.subtitle_id))) + 1;
 const numberIsIncludedInsideRange = (n, min, max) => n >= min && n <= max;
-const everyArrayIndexsAreTrue = (arr) => arr.every(itemBool => itemBool);
+const twoNumbersAreIncludedInsideRange = (n, n1, min, max) => ((n >= min && n1 <= max) || (n < min && n1 >= min) || (n >= min && n <= max));
+const everyArrayIndexesAreTrue = (arr) => arr.every(itemBool => itemBool);
 
 // Subtitles utils
 const isActiveSubtitle = (seconds, start, end) => numberIsIncludedInsideRange(seconds, parseFloat(start), parseFloat(end));
-const rangeIsAvailable = (seconds, items) => {
-    const item = items.find(item => isActiveSubtitle(seconds, item.start, item.end));
+const rangeIsAvailable = (start, end, items) => {
+    const item = items.find(item => twoNumbersAreIncludedInsideRange(start, end, item.start, item.end));
     return item === undefined;
 };
 const getSubtitle = (seconds = 0, cache, items) => {
-    if(cache?.subtitle_id && isActiveSubtitle(seconds, cache.start, cache.end)){
+    if (cache?.subtitle_id && isActiveSubtitle(seconds, cache.start, cache.end)) {
         console.log('cache  ->');
         return cache;
     }
     const item = items.find(item => isActiveSubtitle(seconds, item.start, item.end));
     return item;
 };
+const addOrUpdateItem = (differentItem, items) => {
+    const copy = [];
+    items.forEach(item => copy.push({ ...item }));
+    const existItemIndex = copy.findIndex(item => parseInt(item.subtitle_id) === differentItem.subtitle_id);
+    // modify or add item
+    if (existItemIndex > -1) copy.splice(existItemIndex, 1, differentItem);
+    else copy.push(differentItem);
+    return copy;
+};
+const sortItems = (items) => items.sort((a, b) => parseFloat(a.start) - parseFloat(b.start));
+const mergeItemsAndStored = (items, storedItems) => sortItems(storedItems.reduce((acc, cur) => addOrUpdateItem(cur, acc), items));
 
 export {
     clearWrongClosingJson,
@@ -47,7 +59,10 @@ export {
     areOnlyNumbersAndDots,
     convertToSeconds,
     nextId,
-    everyArrayIndexsAreTrue,
+    everyArrayIndexesAreTrue,
     rangeIsAvailable,
-    getSubtitle
+    getSubtitle,
+    addOrUpdateItem,
+    sortItems,
+    mergeItemsAndStored
 };
