@@ -14,18 +14,7 @@ function Editor() {
     const [secIn, setSecIn] = useState(0);
     const [secOut, setSecOut] = useState(0);
     const [isEditingItem, setIsEditingItem] = useState(false);
-    // const [timeRangeAvailable, setTimeRangeAvailable] = useState([false, false]);
     const [timeRangeAvailable, setTimeRangeAvailable] = useState(false);
-
-    /* useEffect(() => {
-        if (!isEditingItem) return;
-        setTimeRangeAvailable(prevState => [rangeIsAvailable(secIn, items), prevState[1]]);
-    }, [secIn, items, isEditingItem]);
-
-    useEffect(() => {
-        if (!isEditingItem) return;
-        setTimeRangeAvailable(prevState => [prevState[0], rangeIsAvailable(secOut, items)]);
-    }, [secOut, items, isEditingItem]); */
 
     useEffect(() => {
         if (!isEditingItem) return;
