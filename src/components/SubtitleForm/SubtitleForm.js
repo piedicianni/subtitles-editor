@@ -10,7 +10,7 @@ function SubtitleForm({
     setInValue,
     outValue,
     setOutValue,
-    timeRangeAvailable,
+    isRangeAvailable,
     onSubmit,
     formatedIn = '',
     formatedOut = '',
@@ -47,7 +47,7 @@ function SubtitleForm({
                         </Form.Group>
                     </Form.Row>
                     {
-                        !timeRangeAvailable &&
+                        !isRangeAvailable &&
                             <span className='text-warning'>Range di tempo occupato!</span>
                     }
                     <Form.Group>
@@ -84,7 +84,7 @@ SubtitleForm.propTypes = {
     setInValue: PropTypes.func.isRequired,
     outValue: PropTypes.number.isRequired,
     setOutValue: PropTypes.func.isRequired,
-    timeRangeAvailable: PropTypes.bool.isRequired,
+    isRangeAvailable: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
     formatedIn: PropTypes.string,
     formatedOut: PropTypes.string,

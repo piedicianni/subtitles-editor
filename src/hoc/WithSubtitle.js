@@ -6,41 +6,41 @@ const WithSubtitle = WrappedComponent => function Component(props) {
     const {
         id,
         editing,
-        start: defSecIn,
-        end: defSecOut,
-        text: defText,
+        start: defaultSecondsIn,
+        end: defaultSecondsOut,
+        text: defaultText,
         onUpdate,
-        setSecSeek,
-        secIn,
-        setSecIn,
-        secOut,
-        setSecOut,
-        timeRangeAvailable,
+        setSecondsSeek,
+        secondsIn,
+        setSecondsIn,
+        secondsOut,
+        setSecondsOut,
+        isRangeAvailable,
         ...restProps
     } = props;
 
     const setDefaultValues = useCallback(() => {
-        setSecIn(defSecIn);
-        setSecOut(defSecOut);
-        setText(defText);
-    }, [defSecIn, defSecOut, defText, setSecIn, setSecOut, setText]);
+        setSecondsIn(defaultSecondsIn);
+        setSecondsOut(defaultSecondsOut);
+        setText(defaultText);
+    }, [defaultSecondsIn, defaultSecondsOut, defaultText, setSecondsIn, setSecondsOut, setText]);
 
-    const onSetSecIn = useCallback((value) => {
+    const onSetSecondsIn = useCallback((value) => {
         if (areOnlyNumbersAndDots(value)){
-            setSecIn(value);
-            value > secOut && setSecOut(value + 1);
+            setSecondsIn(value);
+            value > secondsOut && setSecondsOut(value + 1);
         }
-    }, [secOut, setSecIn, setSecOut]);
+    }, [secondsOut, setSecondsIn, setSecondsOut]);
 
-    const onSetSecOut = useCallback((value) => areOnlyNumbersAndDots(value) && setSecOut(value), [setSecOut]);
+    const onSetSecondsOut = useCallback((value) => areOnlyNumbersAndDots(value) && setSecondsOut(value), [setSecondsOut]);
 
     const onSubmit = (event) => {
-        const rangeAvail = timeRangeAvailable;
-        !rangeAvail && setDefaultValues();
+        const areSecondsAvailable = isRangeAvailable;
+        !areSecondsAvailable && setDefaultValues();
         onUpdate({
             id: id,
-            secIn: !rangeAvail ? defSecIn : secIn,
-            secOut: !rangeAvail ? defSecOut : secOut,
+            secondsIn: !areSecondsAvailable ? defaultSecondsIn : secondsIn,
+            secondsOut: !areSecondsAvailable ? defaultSecondsOut : secondsOut,
             text: text
         });
         event.preventDefault();
@@ -57,21 +57,21 @@ const WithSubtitle = WrappedComponent => function Component(props) {
         <WrappedComponent
             {...{
                 id,
-                defSecIn,
-                defSecOut,
-                defText,
+                defaultSecondsIn,
+                defaultSecondsOut,
+                defaultText,
                 text,
                 setText,
                 editing,
-                setSecSeek
+                setSecondsSeek
             }}
             {...(editing && {
-                secIn,
-                onSetSecIn,
-                secOut,
-                onSetSecOut,
+                secondsIn,
+                onSetSecondsIn,
+                secondsOut,
+                onSetSecondsOut,
                 onSubmit,
-                timeRangeAvailable
+                isRangeAvailable
             })}
             {...restProps}
         />

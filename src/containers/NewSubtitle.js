@@ -7,12 +7,12 @@ function NewSubtitle({
     id,
     text,
     setText,
-    secIn,
-    onSetSecIn,
-    secOut,
-    onSetSecOut,
+    secondsIn,
+    onSetSecondsIn,
+    secondsOut,
+    onSetSecondsOut,
     onSubmit,
-    timeRangeAvailable,
+    isRangeAvailable,
     onCancel
 }) {
     const onClickCancel = () => onCancel();
@@ -20,13 +20,13 @@ function NewSubtitle({
     return (
         <SubtitleForm
             {...{ id, text, setText, onSubmit }}
-            inValue={secIn}
-            setInValue={onSetSecIn}
-            outValue={secOut}
-            setOutValue={onSetSecOut}
-            timeRangeAvailable={timeRangeAvailable}
-            formatedIn={secondsToHms(secIn)}
-            formatedOut={secondsToHms(secOut)}
+            inValue={secondsIn}
+            setInValue={onSetSecondsIn}
+            outValue={secondsOut}
+            setOutValue={onSetSecondsOut}
+            isRangeAvailable={isRangeAvailable}
+            formatedIn={secondsToHms(secondsIn)}
+            formatedOut={secondsToHms(secondsOut)}
             onClickCancel={() => onClickCancel()}
         />
     )
@@ -36,12 +36,12 @@ NewSubtitle.propTypes = {
     id: PropTypes.number,
     text: PropTypes.string,
     setText: PropTypes.func,
-    secIn: PropTypes.number,
-    onSetSecIn: PropTypes.func,
-    secOut: PropTypes.number,
-    onSetSecOut: PropTypes.func,
+    secondsIn: PropTypes.number,
+    onSetSecondsIn: PropTypes.func,
+    secondsOut: PropTypes.number,
+    onSetSecondsOut: PropTypes.func,
     onSubmit: PropTypes.func,
-    timeRangeAvailable: PropTypes.bool,
+    isRangeAvailable: PropTypes.bool,
     onCancel: PropTypes.func
 };
 

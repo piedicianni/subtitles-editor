@@ -7,7 +7,7 @@ import { nextId, addOrUpdateItem, sortItems } from '../utils/utils';
 import NewSubtitle from './NewSubtitle';
 import { storeItem } from '../services/services';
 
-const initialStartAndEndNewItem = {
+const initialRangeNewItem = {
     start: 1,
     end: 2
 };
@@ -16,13 +16,13 @@ function SubtitleList({ items = [], setItems }) {
     const [editingId, setEditingId] = useState(-1);
     const [creatingId, setCreatingId] = useState(-1);
     const {
-        setSecSeek,
-        secIn,
-        setSecIn,
-        secOut,
-        setSecOut,
+        setSecondsSeek,
+        secondsIn,
+        setSecondsIn,
+        secondsOut,
+        setSecondsOut,
         setIsEditingItem,
-        timeRangeAvailable
+        isRangeAvailable
     } = useContext(EditorContext);
     const itemsDivRef = useRef(null);
 
@@ -33,7 +33,7 @@ function SubtitleList({ items = [], setItems }) {
 
     useEffect(() => {
         editingId === -1 && setIsEditingItem(creatingId > -1);
-        creatingId > -1 && divScrollBottom();
+        creatingId > -1 && elementScrollBottom();
     }, [creatingId, editingId, setIsEditingItem]);
 
     const onSetEditing = useCallback((id = -1) => setEditingId(id), []);
@@ -42,20 +42,20 @@ function SubtitleList({ items = [], setItems }) {
     const onSetCreating = (id = -1) => setCreatingId(id);
     const undoCreating = () => onSetCreating();
 
-    const divScrollBottom = (div = itemsDivRef.current) => {
-        if (div) div.scrollTop = div.scrollHeight;
+    const elementScrollBottom = (element = itemsDivRef.current) => {
+        if (element) element.scrollTop = element.scrollHeight;
     };
     const onClickNew = () => {
         undoEditing();
         onSetCreating(nextId(items));
     };
 
-    const updateItem = ({ id, secIn, secOut, text }) => {
+    const updateItem = ({ id, secondsIn, secondsOut, text }) => {
         const item = {
             subtitle_id: id,
             text: [text],
-            start: secIn,
-            end: secOut
+            start: secondsIn,
+            end: secondsOut
         };
         const itemRes = sortItems(addOrUpdateItem(item, items));
         storeItem(item);
@@ -77,14 +77,14 @@ function SubtitleList({ items = [], setItems }) {
                             end={parseFloat(item.end)}
                             editing={editingId === parseInt(item.subtitle_id)}
                             onSetEditing={onSetEditing}
-                            setSecSeek={setSecSeek}
+                            setSecondsSeek={setSecondsSeek}
                             {...(editingId === parseInt(item.subtitle_id) && {
                                 onUpdate: updateItem,
-                                secIn,
-                                setSecIn,
-                                secOut,
-                                setSecOut,
-                                timeRangeAvailable
+                                secondsIn,
+                                setSecondsIn,
+                                secondsOut,
+                                setSecondsOut,
+                                isRangeAvailable
                             })}
                         />
                     ))
@@ -94,16 +94,16 @@ function SubtitleList({ items = [], setItems }) {
                     <NewSubtitle
                         id={creatingId}
                         text={''}
-                        start={initialStartAndEndNewItem.start}
-                        end={initialStartAndEndNewItem.end}
+                        start={initialRangeNewItem.start}
+                        end={initialRangeNewItem.end}
                         editing={true}
                         {...{
                             onUpdate: updateItem,
-                            secIn,
-                            setSecIn,
-                            secOut,
-                            setSecOut,
-                            timeRangeAvailable
+                            secondsIn,
+                            setSecondsIn,
+                            secondsOut,
+                            setSecondsOut,
+                            isRangeAvailable
                         }}
                         onCancel={() => undoCreating()}
                     />

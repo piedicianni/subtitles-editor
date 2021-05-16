@@ -7,28 +7,28 @@ import { secondsToHms } from '../utils/utils';
 
 function Subtitle({
     id,
-    defSecIn,
-    defSecOut,
-    defText,
+    defaultSecondsIn,
+    defaultSecondsOut,
+    defaultText,
     text,
     setText,
     editing,
-    setSecSeek,
-    secIn,
-    onSetSecIn,
-    secOut,
-    onSetSecOut,
+    setSecondsSeek,
+    secondsIn,
+    onSetSecondsIn,
+    secondsOut,
+    onSetSecondsOut,
     onSubmit,
-    timeRangeAvailable,
+    isRangeAvailable,
     onSetEditing
 }) {
 
-    const onClickPreview = () => setSecSeek(defSecIn);
+    const onClickPreview = () => setSecondsSeek(defaultSecondsIn);
     const onClickEdit = () => onSetEditing(id);
     const onClickCancel = () => onSetEditing();
-    const isRangeAvailable = () => {
-        if(secIn === defSecIn && secOut === defSecOut) return true;
-        return timeRangeAvailable;
+    const checkRangeAvailable = () => {
+        if(secondsIn === defaultSecondsIn && secondsOut === defaultSecondsOut) return true;
+        return isRangeAvailable;
     };
 
     return (
@@ -37,20 +37,20 @@ function Subtitle({
                 !editing
                     ? <SubtitleRow
                         id={id}
-                        inValue={secondsToHms(defSecIn)}
-                        outValue={secondsToHms(defSecOut)}
-                        text={defText}
+                        inValue={secondsToHms(defaultSecondsIn)}
+                        outValue={secondsToHms(defaultSecondsOut)}
+                        text={defaultText}
                         onClickPreview={() => onClickPreview()}
                         onClickEdit={() => onClickEdit()} />
                     : <SubtitleForm
                         {...{ id, text, setText, onSubmit }}
-                        inValue={secIn}
-                        setInValue={onSetSecIn}
-                        outValue={secOut}
-                        setOutValue={onSetSecOut}
-                        timeRangeAvailable={isRangeAvailable()}
-                        formatedIn={secondsToHms(secIn)}
-                        formatedOut={secondsToHms(secOut)}
+                        inValue={secondsIn}
+                        setInValue={onSetSecondsIn}
+                        outValue={secondsOut}
+                        setOutValue={onSetSecondsOut}
+                        isRangeAvailable={checkRangeAvailable()}
+                        formatedIn={secondsToHms(secondsIn)}
+                        formatedOut={secondsToHms(secondsOut)}
                         onClickCancel={() => onClickCancel()}
                     />
             }
@@ -60,19 +60,19 @@ function Subtitle({
 
 Subtitle.propTypes = {
     id: PropTypes.number,
-    defSecIn: PropTypes.number,
-    defSecOut: PropTypes.number,
-    defText: PropTypes.string,
+    defaultSecondsIn: PropTypes.number,
+    defaultSecondsOut: PropTypes.number,
+    defaultText: PropTypes.string,
     text: PropTypes.string,
     setText: PropTypes.func,
     editing: PropTypes.bool,
-    setSecSeek: PropTypes.func,
-    secIn: PropTypes.number,
-    onSetSecIn: PropTypes.func,
-    secOut: PropTypes.number,
-    onSetSecOut: PropTypes.func,
+    setSecondsSeek: PropTypes.func,
+    secondsIn: PropTypes.number,
+    onSetSecondsIn: PropTypes.func,
+    secondsOut: PropTypes.number,
+    onSetSecondsOut: PropTypes.func,
     onSubmit: PropTypes.func,
-    timeRangeAvailable: PropTypes.bool,
+    isRangeAvailable: PropTypes.bool,
     onSetEditing: PropTypes.func
 };
 

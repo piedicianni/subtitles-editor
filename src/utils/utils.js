@@ -51,7 +51,7 @@ const addOrUpdateItem = (differentItem, items) => {
     return copy;
 };
 const sortItems = (items) => items.sort((a, b) => parseFloat(a.start) - parseFloat(b.start));
-const mergeItemsAndStored = (items, storedItems) => sortItems(storedItems.reduce((acc, cur) => addOrUpdateItem(cur, acc), items));
+const mergeItemsAndStoredItems = (items, storedItems) => sortItems(storedItems.reduce((acc, cur) => addOrUpdateItem(cur, acc), items));
 
 export {
     clearWrongClosingJson,
@@ -64,5 +64,5 @@ export {
     getSubtitle,
     addOrUpdateItem,
     sortItems,
-    mergeItemsAndStored
+    mergeItemsAndStoredItems
 };

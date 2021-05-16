@@ -17,9 +17,9 @@ const onVideoPlaying = () => {
 
 function VideoArea(props) {
     const [pause, setPause] = useState(true);
-    const [secPlayed, setSecPlayed] = useState(0);
+    const [secondsPlayed, setSecondsPlayed] = useState(0);
     const [subtitleOnScreen, setSubtitleOnScreen] = useState('');
-    const { secSeek, isEditingItem, secIn, setSecIn, secOut, setSecOut } = useContext(EditorContext);
+    const { secondsSeek, isEditingItem, secondsIn, setSecondsIn, secondsOut, setSecondsOut } = useContext(EditorContext);
     const playerRef = useRef(null);
 
     const subtitleText = useMemo(() => {
@@ -28,31 +28,31 @@ function VideoArea(props) {
     }, [isEditingItem]);
 
     useEffect(() => {
-        if (secSeek === 0 || isEditingItem) return;
-        playerRef.current.seekTo(secSeek);
-    }, [secSeek, isEditingItem]);
+        if (secondsSeek === 0 || isEditingItem) return;
+        playerRef.current.seekTo(secondsSeek);
+    }, [secondsSeek, isEditingItem]);
 
     useEffect(() => {
-        if (secIn === 0) return;
-        playerRef.current.seekTo(secIn);
-    }, [secIn]);
+        if (secondsIn === 0) return;
+        playerRef.current.seekTo(secondsIn);
+    }, [secondsIn]);
 
     useEffect(() => {
-        if (secOut === 0) return;
-        playerRef.current.seekTo(secOut);
-    }, [secOut]);
+        if (secondsOut === 0) return;
+        playerRef.current.seekTo(secondsOut);
+    }, [secondsOut]);
 
     useEffect(() => {
         if (!subtitleText) return;
-        setSubtitleOnScreen(subtitleText(secPlayed, props.items)?.text.join('\n') ?? '');
-    }, [secPlayed, subtitleText, props.items]);
+        setSubtitleOnScreen(subtitleText(secondsPlayed, props.items)?.text.join('\n') ?? '');
+    }, [secondsPlayed, subtitleText, props.items]);
 
     useEffect(() => {
         if (!isEditingItem) return;
         setPause(true);
     }, [isEditingItem]);
 
-    const onSetSecPlayed = (value) => setSecPlayed(Math.ceil(value));
+    const onSetSecPlayed = (value) => setSecondsPlayed(Math.ceil(value));
 
     return (
         <div className='video-area'>
@@ -77,9 +77,9 @@ function VideoArea(props) {
                 <div className='slider'>
                     <Nouislider
                         range={{ min: 0, max: parseFloat(props.duration) }}
-                        start={[secIn, secOut]}
+                        start={[secondsIn, secondsOut]}
                         onChange={(values, handle) => {
-                            const setFn = handle === 0 ? setSecIn : setSecOut;
+                            const setFn = handle === 0 ? setSecondsIn : setSecondsOut;
                             setFn(parseFloat(values[handle]));
                         }}
                         connect

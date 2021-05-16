@@ -3,23 +3,23 @@ import { infoVideo, subtitleList, storedSubtitles } from '../services/services';
 import { clearWrongClosingJson } from '../utils/utils';
 import SubtitleList from './SubtitleList';
 import VideoArea from './VideoArea';
-import { rangeIsAvailable, mergeItemsAndStored } from '../utils/utils';
+import { rangeIsAvailable, mergeItemsAndStoredItems } from '../utils/utils';
 
 export const EditorContext = createContext();
 
 function Editor() {
     const [videoInfo, setVideoInfo] = useState({});
     const [items, setItems] = useState([]);
-    const [secSeek, setSecSeek] = useState(0);
-    const [secIn, setSecIn] = useState(0);
-    const [secOut, setSecOut] = useState(0);
+    const [secondsSeek, setSecondsSeek] = useState(0);
+    const [secondsIn, setSecondsIn] = useState(0);
+    const [secondsOut, setSecondsOut] = useState(0);
     const [isEditingItem, setIsEditingItem] = useState(false);
-    const [timeRangeAvailable, setTimeRangeAvailable] = useState(false);
+    const [isRangeAvailable, setIsRangeAvailable] = useState(false);
 
     useEffect(() => {
         if (!isEditingItem) return;
-        setTimeRangeAvailable(rangeIsAvailable(secIn, secOut, items));
-    }, [secIn, secOut, items, isEditingItem]);
+        setIsRangeAvailable(rangeIsAvailable(secondsIn, secondsOut, items));
+    }, [secondsIn, secondsOut, items, isEditingItem]);
 
     useEffect(() => {
         const [infoPromise, infoController] = infoVideo();
@@ -33,7 +33,7 @@ function Editor() {
         const [listPromise, listController] = subtitleList();
         listPromise()
             .then(res => {
-                const mergedItems = mergeItemsAndStored(res, storedSubtitles())
+                const mergedItems = mergeItemsAndStoredItems(res, storedSubtitles())
                 setItems(mergedItems);
             })
             .catch(error => console.log(error));
@@ -47,15 +47,15 @@ function Editor() {
     return (
         <>
             <EditorContext.Provider value={{
-                secSeek,
-                setSecSeek,
-                secIn,
-                setSecIn,
-                secOut,
-                setSecOut,
+                secondsSeek,
+                setSecondsSeek,
+                secondsIn,
+                setSecondsIn,
+                secondsOut,
+                setSecondsOut,
                 isEditingItem,
                 setIsEditingItem,
-                timeRangeAvailable
+                isRangeAvailable
             }}>
                 <SubtitleList items={items} setItems={setItems} />
                 <VideoArea items={items} {...videoInfo} />
