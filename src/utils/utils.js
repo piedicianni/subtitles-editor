@@ -17,8 +17,8 @@ const secondsToHms = (seconds) => {
     const m = Math.floor(seconds % 3600 / 60);
     const s = Math.floor(seconds % 3600 % 60);
 
-    const fm = (value) => `${value < 10 ? '0' : ''}${value}`;
-    return `${h > 0 ? fm(h) + ':' : ''}${fm(m)}:${fm(s)}`;
+    const beautify = (value) => `${value < 10 ? '0' : ''}${value}`;
+    return `${h > 0 ? beautify(h) + ':' : ''}${beautify(m)}:${beautify(s)}`;
 };
 const areOnlyNumbersAndDots = value => (/^\d*\.?\d*$/).test(value);
 const convertToSeconds = (n) => n / 1000;
@@ -29,7 +29,7 @@ const everyArrayIndexesAreTrue = (arr) => arr.every(itemBool => itemBool);
 
 // Subtitles utils
 const isActiveSubtitle = (seconds, start, end) => numberIsIncludedInsideRange(seconds, parseFloat(start), parseFloat(end));
-const rangeIsAvailable = (start, end, items) => {
+const isRangeAvailable = (start, end, items) => {
     const item = items.find(item => twoNumbersAreIncludedInsideRange(start, end, item.start, item.end));
     return item === undefined;
 };
@@ -60,7 +60,7 @@ export {
     convertToSeconds,
     nextId,
     everyArrayIndexesAreTrue,
-    rangeIsAvailable,
+    isRangeAvailable,
     getSubtitle,
     addOrUpdateItem,
     sortItems,

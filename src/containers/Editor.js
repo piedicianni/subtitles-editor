@@ -3,7 +3,7 @@ import { infoVideo, subtitleList, storedSubtitles } from '../services/services';
 import { clearWrongClosingJson } from '../utils/utils';
 import SubtitleList from './SubtitleList';
 import VideoArea from './VideoArea';
-import { rangeIsAvailable, mergeItemsAndStoredItems } from '../utils/utils';
+import { isRangeAvailable as checkRangeIsAvailable, mergeItemsAndStoredItems } from '../utils/utils';
 
 export const EditorContext = createContext();
 
@@ -18,7 +18,7 @@ function Editor() {
 
     useEffect(() => {
         if (!isEditingItem) return;
-        setIsRangeAvailable(rangeIsAvailable(secondsIn, secondsOut, items));
+        setIsRangeAvailable(checkRangeIsAvailable(secondsIn, secondsOut, items));
     }, [secondsIn, secondsOut, items, isEditingItem]);
 
     useEffect(() => {
